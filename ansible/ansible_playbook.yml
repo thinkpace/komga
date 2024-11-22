@@ -1,0 +1,4 @@
+- hosts: komga
+  become: true
+  roles:
+    - install-komga

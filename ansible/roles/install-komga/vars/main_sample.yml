@@ -1,0 +1,9 @@
+---
+komga_path: '/opt/komga'
+komga_data_path: '/path/to/my/komga/data/folder'
+komga_ebooks_path: '/path/to/my/ebooks/data/folder'
+komga_comics_path: '/path/to/my/comics/data/folder'
+komga_user: 'komga'
+komga_group: 'komga'
+komga_port: '25600'
+komga_rsync_target: 'backup_user@rsync_server::backup_target'

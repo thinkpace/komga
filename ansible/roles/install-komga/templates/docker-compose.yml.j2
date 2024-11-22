@@ -1,0 +1,20 @@
+services:
+  komga:
+    image: gotson/komga:latest
+    container_name: komga
+    restart: unless-stopped
+    user: {{ komga_user_id }}:{{ komga_group_id }}
+    ports:
+      - '{{ komga_port }}:25600'
+    volumes:
+      - type: bind
+        source: {{ komga_data_path }}
+        target: /config
+      - type: bind
+        source: {{ komga_ebooks_path }}
+        target: /data/ebooks
+      - type: bind
+        source: {{ komga_comics_path }}
+        target: /data/comics
+    environment:
+      - TZ=Europe/Berlin

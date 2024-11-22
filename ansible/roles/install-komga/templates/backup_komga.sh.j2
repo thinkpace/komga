@@ -1,0 +1,21 @@
+#!/bin/sh
+
+backup_date=$(date +'%Y%m%d')
+backup_path=$(mktemp -d)
+backup_name='komga_backup'
+rsync_target={{ komga_rsync_target }}
+
+# Stop Navidrome
+docker compose -f {{ komga_path }}/docker-compose.yml down
+
+# Create backup archive
+tar cvfz $backup_path/$backup_name-$backup_date.tgz {{ komga_data_path }}
+
+# Start Navidrome
+docker compose -f {{ komga_path }}/docker-compose.yml up -d
+
+# rsync to NAS
+rsync -av --password-file={{ komga_path }}/rsync.pwd $backup_path/$backup_name-$backup_date.tgz $rsync_target
+
+# Remove tmp directory
+rm -Rf $backup_path
