@@ -34,13 +34,15 @@
     hour: 4
     minute: 30
     job: 'docker compose -f {{ komga_path }}/docker-compose.yml down && docker compose -f {{ komga_path }}/docker-compose.yml pull && docker compose -f {{ komga_path }}/docker-compose.yml up -d'
-- name: Copy backup_komga.sh
+- name: Copy scripts
   ansible.builtin.template:
-    src: backup_komga.sh.j2
-    dest: '{{ komga_path }}/backup_komga.sh'
+    src: '{{ item }}.j2'
+    dest: '{{ komga_path }}/{{ item }}'
+    mode: 0755
     owner: root
     group: root
-    mode: 0775
+  loop:
+    - 'backup_komga.sh'
 - name: Enable daily backup
   ansible.builtin.cron:
     name: 'Backup {{ komga_path }}'
