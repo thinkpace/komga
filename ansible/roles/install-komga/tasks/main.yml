@@ -29,29 +29,29 @@
     gid: '{{ ansible_facts.getent_passwd[komga.group.name][1] }}'
 - name: Enable daily service shutdown for maintenance
   ansible.builtin.cron:
-    name: 'Start Maintenance {{ komga_path }}'
+    name: 'Start Maintenance {{ komga.path }}'
     user: root
     hour: '{{ komga.maintenance.start_time.cron_hour }}'
     minute: '{{ komga.maintenance.start_time.cron_minute }}'
-    job: 'docker compose -f {{ komga_path }}/docker-compose.yml down'
+    job: 'docker compose -f {{ komga.path }}/docker-compose.yml down'
 - name: Enable daily upgrade of base image
   ansible.builtin.cron:
-    name: 'Upgrade {{ komga_path }}'
+    name: 'Upgrade {{ komga.path }}'
     user: root
-    hour: '{{ komga.update_time.cron_hour }}'
-    minute: '{{ komga.update_time.cron_minute }}'
-    job: 'docker compose -f {{ komga_path }}/docker-compose.yml pull'
+    hour: '{{ komga.update_docker.time.cron_hour }}'
+    minute: '{{ komga.update_docker.time.cron_minute }}'
+    job: 'docker compose -f {{ komga.path }}/docker-compose.yml pull'
 - name: Enable daily service start from maintenance
   ansible.builtin.cron:
-    name: 'End Maintenance {{ komga_path }}'
+    name: 'End Maintenance {{ komga.path }}'
     user: root
     hour: '{{ komga.maintenance.end_time.cron_hour }}'
     minute: '{{ komga.maintenance.end_time.cron_minute }}'
-    job: 'docker compose -f {{ komga_path }}/docker-compose.yml up -d'
+    job: 'docker compose -f {{ komga.path }}/docker-compose.yml up -d'
 - name: Copy scripts
   ansible.builtin.template:
     src: '{{ item }}.j2'
-    dest: '{{ komga_path }}/{{ item }}'
+    dest: '{{ komga.path }}/{{ item }}'
     mode: '0755'
     owner: root
     group: root
@@ -59,8 +59,8 @@
     - 'backup_komga.sh'
 - name: Enable daily backup
   ansible.builtin.cron:
-    name: 'Backup {{ komga_path }}'
+    name: 'Backup {{ komga.path }}'
     user: root
-    hour: '{{ komga.backup_time.cron_hour }}'
-    minute: '{{ komga.backup_time.cron_minute }}'
-    job: '{{ komga_path }}/backup_komga.sh'
+    hour: '{{ komga.backup.time.cron_hour }}'
+    minute: '{{ komga.backup.time.cron_minute }}'
+    job: '{{ komga.path }}/backup_komga.sh'
