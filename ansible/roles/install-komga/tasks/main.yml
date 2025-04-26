@@ -1,18 +1,18 @@
 ---
 - name: Create installation directory
-  file:
+  ansible.builtin.file:
     path: '{{ komga_path }}'
     state: directory
     owner: '{{ komga_user }}'
     group: '{{ komga_group }}'
-    mode: 0775
+    mode: '0775'
 - name: Create data directory
-  file:
+  ansible.builtin.file:
     path: '{{ komga_data_path }}'
     state: directory
     owner: '{{ komga_user }}'
     group: '{{ komga_group }}'
-    mode: 0770
+    mode: '0770'
 - name: Get komga user info
   ansible.builtin.getent:
     database: passwd
@@ -23,7 +23,7 @@
     dest: '{{ komga_path }}/docker-compose.yml'
     owner: root
     group: root
-    mode: 0664
+    mode: '0664'
   vars:
     komga_user_id: '{{ ansible_facts.getent_passwd[komga_user][1] }}'
     komga_group_id: '{{ ansible_facts.getent_passwd[komga_group][1] }}'
@@ -38,7 +38,7 @@
   ansible.builtin.template:
     src: '{{ item }}.j2'
     dest: '{{ komga_path }}/{{ item }}'
-    mode: 0755
+    mode: '0755'
     owner: root
     group: root
   loop:
