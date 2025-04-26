@@ -44,7 +44,11 @@ docker compose up -d
 
 in setup directory.
 
-## Upgrade
+# Maintenance
+
+I introduced a maintenance window to make it easier to backup data, update the service itself and to have a good time to update underlying services like OS or NFS. Updates and backups are executed in that maintenance window.
+
+# Upgrade
 
 Ansible role is creating a cronjob which updates base images every night.
 
