@@ -27,13 +27,27 @@
   vars:
     komga_user_id: '{{ ansible_facts.getent_passwd[komga_user][1] }}'
     komga_group_id: '{{ ansible_facts.getent_passwd[komga_group][1] }}'
+- name: Enable daily service shutdown for maintenance
+  ansible.builtin.cron:
+    name: 'Start Maintenance {{ komga_path }}'
+    user: root
+    hour: '{{ komga.maintenance.start_time.cron_hour }}'
+    minute: '{{ komga.maintenance.start_time.cron_minute }}'
+    job: 'docker compose -f {{ komga_path }}/docker-compose.yml down'
 - name: Enable daily upgrade of base image
   ansible.builtin.cron:
     name: 'Upgrade {{ komga_path }}'
     user: root
-    hour: 4
-    minute: 30
-    job: 'docker compose -f {{ komga_path }}/docker-compose.yml down && docker compose -f {{ komga_path }}/docker-compose.yml pull && docker compose -f {{ komga_path }}/docker-compose.yml up -d'
+    hour: '{{ komga.update_time.cron_hour }}'
+    minute: '{{ komga.update_time.cron_minute }}'
+    job: 'docker compose -f {{ komga_path }}/docker-compose.yml pull'
+- name: Enable daily service start from maintenance
+  ansible.builtin.cron:
+    name: 'End Maintenance {{ komga_path }}'
+    user: root
+    hour: '{{ komga.maintenance.end_time.cron_hour }}'
+    minute: '{{ komga.maintenance.end_time.cron_minute }}'
+    job: 'docker compose -f {{ komga_path }}/docker-compose.yml up -d'
 - name: Copy scripts
   ansible.builtin.template:
     src: '{{ item }}.j2'
@@ -47,6 +61,6 @@
   ansible.builtin.cron:
     name: 'Backup {{ komga_path }}'
     user: root
-    hour: 1
-    minute: 0
+    hour: '{{ komga.backup_time.cron_hour }}'
+    minute: '{{ komga.backup_time.cron_minute }}'
     job: '{{ komga_path }}/backup_komga.sh'
