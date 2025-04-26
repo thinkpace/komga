@@ -1,9 +1,27 @@
 ---
-komga_path: '/opt/komga'
-komga_data_path: '/path/to/my/komga/data/folder'
-komga_ebooks_path: '/path/to/my/ebooks/data/folder'
-komga_comics_path: '/path/to/my/comics/data/folder'
-komga_user: 'komga'
-komga_group: 'komga'
-komga_port: '25600'
-komga_rsync_target: 'backup_user@rsync_server::backup_target'
+komga:
+  path: '/opt/komga'
+  user:
+    name: 'komga'
+  group:
+    name: 'komga'
+  port: '25600'
+  internal_data_path: '/path/to/my/komga/data/folder'
+  ebooks_path: '/path/to/my/ebooks/data/folder'
+  comics_path: '/path/to/my/comics/data/folder'
+  maintenance:
+    start_time:
+      cron_hour: 3
+      cron_minute: 0
+    end_time:
+      cron_hour: 5
+      cron_minute: 0
+  update:
+    time:
+      cron_hour: 4
+      cron_minute: 30
+  backup:
+    time:
+      cron_hour: 3
+      cron_minute: 5
+    rsync_target: 'backup_user@rsync_server::backup_target'
