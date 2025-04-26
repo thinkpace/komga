@@ -1,4 +1,5 @@
-- hosts: komga
+- name: Install and configure Komga
+  hosts: komga
   become: true
   roles:
     - install-komga
