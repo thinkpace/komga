@@ -16,7 +16,7 @@ komga:
     end_time:
       cron_hour: 5
       cron_minute: 0
-  update:
+  update_docker:
     time:
       cron_hour: 4
       cron_minute: 30
