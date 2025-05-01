@@ -12,18 +12,18 @@ rsync_target={{ komga.backup.rsync_target }}
 # Print backup information
 echo "Komga path: {{ komga.path }}"
 echo "Komga internal data path: {{ komga.internal_data_path }}"
-echo "Komga user: {{ komga.user }}"
-echo "Komga group: {{ komga.group }}"
+echo "Komga user: {{ komga.user.name }}"
+echo "Komga group: {{ komga.group.name }}"
 echo "Backup name: $backup_name"
 echo "Backup date: $backup_date"
 echo "Backup path: $backup_path"
 echo "rsync target: $rsync_target"
 
 echo "Ensure backup directory has correct permissions ..."
-chown {{ komga.user }}:{{ komga.group }} $backup_path
+chown {{ komga.user.name }}:{{ komga.group.name }} $backup_path
 
 echo "Create backup archive as komga user ..."
-sudo -u {{ komga.user }} tar cvfz $backup_path/$backup_name-$backup_date.tgz {{ komga.internal_data_path }}
+sudo -u {{ komga.user.name }} tar cvfz $backup_path/$backup_name-$backup_date.tgz {{ komga.internal_data_path }}
 
 echo "Change ownership of the backup archive to root to ensure correct useful permissions on rsync server ..."
 chown root:root $backup_path/$backup_name-$backup_date.tgz
