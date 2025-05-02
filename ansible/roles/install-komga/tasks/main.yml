@@ -33,7 +33,7 @@
     user: root
     hour: '{{ komga.maintenance.start_time.cron_hour }}'
     minute: '{{ komga.maintenance.start_time.cron_minute }}'
-    job: 'docker compose -f {{ komga.path }}/docker-compose.yml down'
+    job: 'docker compose -f {{ komga.path }}/docker-compose.yml stop'
 - name: Enable daily upgrade of base image
   ansible.builtin.cron:
     name: 'Upgrade {{ komga.path }}'
