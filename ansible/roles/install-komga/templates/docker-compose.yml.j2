@@ -18,3 +18,5 @@ services:
         target: /data/comics
     environment:
       - TZ=Europe/Berlin
+      - KOMGA_DATABASE_CHECKLOCALFILESYSTEM=FALSE
+      - KOMGA_TASKSDB_CHECKLOCALFILESYSTEM=FALSE
